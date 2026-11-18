@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <meta content="mobile_tab" name="shell-type"/>
+  <title>Lombok Clima-Farm • Smart Farming</title>
+  
+  <!-- Preconnect & Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  
+  <style>
+    @layer base {
+      html, body { width: 100%; min-height: 100%; margin: 0; padding: 0; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    body { min-height: max(884px, 100dvh); }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block; vertical-align: middle; line-height: 1;
+    }
+    .material-symbols-outlined.fill-1 { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    
+    /* Tab transition */
+    .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .tab-content.active { display: flex; opacity: 1; transform: translateY(0); }
+    
+    /* Custom switch toggle */
+    .switch-toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch-toggle input { opacity: 0; width: 0; height: 0; }
+    .slider-toggle { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #bfc9c1; transition: .3s; border-radius: 24px; }
+    .slider-toggle:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider-toggle { background-color: #0f5238; }
+    input:checked + .slider-toggle:before { transform: translateX(20px); }
+  </style>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container": "#efeee7", "on-primary-fixed-variant": "#0e5138", "inverse-primary": "#95d4b3", "outline": "#707973", "tertiary": "#653f1f", "on-tertiary-fixed": "#2f1400", "surface-container-lowest": "#ffffff", "secondary": "#3f6653", "on-tertiary-fixed-variant": "#643e1f", "outline-variant": "#bfc9c1", "on-error-container": "#93000a", "primary-fixed-dim": "#95d4b3", "error-container": "#ffdad6", "on-surface": "#1b1c18", "on-background": "#1b1c18", "tertiary-fixed": "#ffdcc4", "surface": "#fbf9f2", "primary": "#0f5238", "on-primary-container": "#a8e7c5", "surface-variant": "#e3e3dc", "on-tertiary-container": "#ffd1b1", "tertiary-fixed-dim": "#f3bb92", "background": "#fbf9f2", "surface-container-low": "#f5f4ed", "on-error": "#ffffff", "on-secondary-fixed": "#002114", "inverse-surface": "#30312c", "surface-container-high": "#e9e8e1", "on-tertiary": "#ffffff", "error": "#ba1a1a", "primary-container": "#2d6a4f", "on-secondary": "#ffffff", "surface-bright": "#fbf9f2", "inverse-on-surface": "#f2f1ea", "on-primary": "#ffffff", "tertiary-container": "#805634", "secondary-fixed-dim": "#a5d0b9", "on-secondary-fixed-variant": "#274e3d", "primary-fixed": "#b1f0ce", "on-primary-fixed": "#002114", "surface-container-highest": "#e3e3dc", "surface-tint": "#2c694e", "secondary-container": "#beead1", "secondary-fixed": "#c1ecd4", "on-surface-variant": "#404943", "on-secondary-container": "#436b58", "surface-dim": "#dbdad3"
+          },
+          spacing: { "space-md": "1rem", "space-xl": "2.25rem", "margin": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter": "1rem" },
+          fontFamily: {
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"], "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"], "headline-xl-mobile": ["Plus Jakarta Sans", "sans-serif"], "headline-md": ["Plus Jakarta Sans", "sans-serif"], "body-sm": ["Inter", "sans-serif"], "label-sm": ["Plus Jakarta Sans", "sans-serif"], "headline-xl": ["Plus Jakarta Sans", "sans-serif"], "label-md": ["Plus Jakarta Sans", "sans-serif"], "body-lg": ["Inter", "sans-serif"], "label-lg": ["Plus Jakarta Sans", "sans-serif"], "body-md": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "700" }], "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "700" }], "headline-xl-mobile": ["26px", { lineHeight: "34px", fontWeight: "800" }], "headline-md": ["18px", { lineHeight: "24px", fontWeight: "700" }], "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.04em", fontWeight: "700" }], "headline-xl": ["32px", { lineHeight: "40px", fontWeight: "800" }], "label-md": ["13px", { lineHeight: "18px", fontWeight: "600" }], "body-lg": ["17px", { lineHeight: "26px", fontWeight: "500" }], "label-lg": ["15px", { lineHeight: "20px", fontWeight: "700" }], "body-md": ["15px", { lineHeight: "22px", fontWeight: "400" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen selection:bg-secondary-container selection:text-on-secondary-container">
+
+  <!-- Desktop Presentation Outer Shell -->
+  <div class="w-full flex-1 flex justify-center bg-surface-container/60 min-h-screen">
+    
+    <!-- Mobile Screen Frame Constraint -->
+    <div id="app-container" class="w-full max-w-md bg-surface min-h-screen relative flex flex-col shadow-2xl overflow-x-hidden">
+
+      <!-- =============================================================== -->
+      <!-- SCREEN 1: SPLASH SCREEN -->
+      <!-- =============================================================== -->
+      <section id="screen-splash" class="flex-1 flex flex-col relative w-full pt-safe pb-safe bg-surface px-margin z-[100] transition-opacity duration-500">
+        <div class="flex flex-col w-full relative overflow-hidden select-none pb-8 flex-1 justify-between">
+          <!-- Background Blur -->
+          <div class="absolute inset-0 pointer-events-none z-0">
+            <div class="absolute -top-24 -left-20 w-80 h-80 rounded-full bg-secondary-container/15 blur-3xl"></div>
+            <div class="absolute top-1/2 -right-24 w-96 h-96 rounded-full bg-primary-fixed/20 blur-3xl"></div>
+            <div class="absolute bottom-10 left-1/4 w-72 h-72 rounded-full bg-tertiary-fixed/20 blur-2xl"></div>
+            <svg class="w-full h-full opacity-10 object-cover" fill="none" viewbox="0 0 400 800" xmlns="http://www.w3.org/2000/svg">
+              <path d="M-50 180C50 160 120 220 200 200C280 180 340 120 450 150" stroke="#0f5238" stroke-dasharray="6 8" stroke-width="2"></path>
+              <path d="M-20 290C60 270 140 330 220 310C300 290 360 240 430 270" stroke="#0f5238" stroke-width="1.5"></path>
+              <path d="M-60 410C40 380 130 460 210 430C290 400 350 360 460 390" stroke="#0f5238" stroke-dasharray="4 6" stroke-width="2"></path>
+            </svg>
+          </div>
+
+          <div class="relative z-10 flex flex-col items-center justify-between min-h-[640px] py-4 flex-1">
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/80 backdrop-blur-md shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+              <span class="w-2 h-2 rounded-full bg-primary -ml-3"></span>
+              <span class="font-label-sm text-label-sm text-secondary tracking-wide uppercase">Version 2.4 • Empowering Lombok Farmers</span>
+            </div>
+
+            <div class="flex flex-col items-center text-center my-auto px-4 w-full max-w-sm">
+              <div class="relative mb-6">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-secondary-container/60 via-primary-fixed/40 to-tertiary-fixed/30 rounded-full blur-xl opacity-80 animate-pulse"></div>
+                <div class="relative flex items-center justify-center w-28 h-28 rounded-full bg-surface-container-lowest shadow-xl ring-4 ring-secondary-container/40 p-3">
+                  <img alt="Lombok Clima-Farm Logo" class="w-full h-full object-contain drop-shadow rounded-full" src="https://placehold.co/160x160/0f5238/ffffff?text=LCF" onerror="this.onerror=null;this.src='https://placehold.co/160x160/0f5238/ffffff?text=LCF';"/>
+                </div>
+                <div class="absolute -bottom-2 -right-1 bg-primary text-on-primary rounded-full p-1.5 shadow-md flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[18px]">wb_sunny</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface tracking-tight uppercase">Lombok Clima<span class="text-primary">-Farm</span></h1>
+                <span class="material-symbols-outlined text-primary text-[22px] animate-bounce fill-1">eco</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface-variant font-medium tracking-wide">Smart Farming, Better Future</p>
+              
+              <!-- Telemetry -->
+              <div class="grid grid-cols-3 gap-2.5 w-full mt-7 pt-5 border-t border-outline-variant/30">
+                <div class="flex flex-col items-center bg-surface-container-lowest/80 backdrop-blur-sm rounded-xl py-2 px-1.5 shadow-sm">
+                  <span class="material-symbols-outlined text-primary text-[20px] mb-0.5">landscape</span>
+                  <span class="font-label-sm text-label-sm text-secondary">Rinjani</span>
+                  <span class="font-body-sm text-body-sm text-on-surface font-semibold">Micro 24°C</span>
+                </div>
+                <div class="flex flex-col items-center bg-surface-container-lowest/80 backdrop-blur-sm rounded-xl py-2 px-1.5 shadow-sm">
+                  <span class="material-symbols-outlined text-secondary text-[20px] mb-0.5">water_drop</span>
+                  <span class="font-label-sm text-label-sm text-secondary">Humidity</span>
+                  <span class="font-body-sm text-body-sm text-on-surface font-semibold">78% Optimal</span>
+                </div>
+                <div class="flex flex-col items-center bg-surface-container-lowest/80 backdrop-blur-sm rounded-xl py-2 px-1.5 shadow-sm">
+                  <span class="material-symbols-outlined text-tertiary text-[20px] mb-0.5">sensors</span>
+                  <span class="font-label-sm text-label-sm text-secondary">IoT Sensors</span>
+                  <span class="font-body-sm text-body-sm text-on-surface font-semibold">142 Active</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full max-w-sm flex flex-col gap-4 mt-auto">
+              <div class="flex flex-col gap-2 bg-surface-container-lowest/90 backdrop-blur-md p-3.5 rounded-xl shadow-md">
+                <div class="flex justify-between items-center text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-[18px] animate-spin">sync</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant font-medium" id="sync-status">Connecting to BMKG NTB satellite...</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-primary font-bold" id="sync-percent">45%</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-surface-container overflow-hidden p-0.5">
+                  <div class="h-full rounded-full bg-gradient-to-r from-tertiary-container via-primary to-secondary transition-all duration-300 ease-out" id="progress-indicator" style="width: 45%;"></div>
+                </div>
+              </div>
+              <button class="w-full h-13 py-3.5 px-6 rounded-lg bg-primary hover:bg-on-primary-fixed-variant active:scale-[0.98] text-on-primary flex items-center justify-center gap-2 shadow-lg transition-all duration-200" id="btn-enter" onclick="enterApp()">
+                <span class="font-label-lg text-label-lg font-bold" id="btn-enter-text">Enter Farm Dashboard</span>
+                <span class="material-symbols-outlined text-[20px]" id="btn-enter-icon">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- MAIN APP CONTAINER -->
+      <!-- =============================================================== -->
+      <div id="screen-main-app" class="hidden flex-1 flex flex-col min-h-screen relative w-full bg-surface">
+
+        <!-- Universal App Fixed Header -->
+        <header class="fixed top-0 max-w-md w-full z-40 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(27,67,50,0.04)] border-b border-surface-container-high/60">
+          <div class="flex items-center justify-between px-margin h-16">
+            <div class="flex items-center gap-space-sm cursor-pointer" onclick="switchNavTab('home')">
+              <img alt="Lombok Clima-Farm Logo" class="h-8 w-8 rounded-full object-contain" src="https://placehold.co/80x80/0f5238/ffffff?text=LCF" onerror="this.onerror=null;this.src='https://placehold.co/80x80/0f5238/ffffff?text=LCF';"/>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-primary">location_on</span>
+                  <span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Central Lombok, NTB</span>
+                </div>
+                <span class="font-headline-md text-headline-md text-on-surface leading-tight tracking-tight" id="header-page-title">Home</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-space-xs">
+              <button aria-label="Notifications" class="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors relative" onclick="showToast('No new notifications')">
+                <span class="material-symbols-outlined text-[22px]">notifications</span>
+                <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span>
+              </button>
+              <button aria-label="Farmer Profile" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 hover:opacity-90 active:scale-95 transition-all shadow-sm ring-2 ring-primary/20" onclick="switchNavTab('profile')">
+                <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Dynamic View Area -->
+        <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 px-margin overflow-y-auto">
+
+          <!-- =========================================================== -->
+          <!-- TAB 1: FARMER SMART HOME -->
+          <!-- =========================================================== -->
+          <div id="tab-home" class="tab-content active flex-col w-full pb-6 space-y-space-md mt-4">
+            
+            <!-- Farmer Greeting Card -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_rgba(27,67,50,0.04),0_8px_20px_rgba(27,67,50,0.03)] flex flex-col gap-space-sm relative overflow-hidden">
+              <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-secondary-container/30 rounded-full blur-2xl pointer-events-none"></div>
+              <div class="flex items-start justify-between">
+                <div class="flex flex-col">
+                  <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Pujut Subak • Central Lombok</span>
+                  <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight mt-0.5">
+                    Good Morning, <span class="text-primary font-extrabold">Mr. Amaq Rusli</span>
+                  </h1>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center shrink-0 text-on-secondary-container shadow-sm cursor-pointer" onclick="switchNavTab('weather-advice')">
+                  <span class="material-symbols-outlined text-[24px]">wb_sunny</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-space-sm bg-surface-container-low rounded-lg p-space-sm cursor-pointer hover:bg-surface-container" onclick="switchNavTab('weather-advice')">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="material-symbols-outlined text-primary text-[20px] shrink-0 fill-1">partly_cloudy_day</span>
+                  <span class="font-label-md text-label-md text-on-surface truncate">Partly Cloudy 29°C</span>
+                </div>
+                <span class="w-1 h-1 rounded-full bg-outline-variant shrink-0"></span>
+                <div class="flex items-center gap-1 text-on-surface-variant min-w-0">
+                  <span class="material-symbols-outlined text-[16px] text-secondary shrink-0">water_drop</span>
+                  <span class="font-body-sm text-body-sm truncate">Humid 78%</span>
+                </div>
+                <span class="w-1 h-1 rounded-full bg-outline-variant shrink-0"></span>
+                <div class="flex items-center gap-1 text-on-surface-variant min-w-0">
+                  <span class="material-symbols-outlined text-[16px] text-secondary shrink-0">air</span>
+                  <span class="font-body-sm text-body-sm truncate">8 km/h</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Optimal Work Window Card -->
+            <section class="bg-surface-container-low rounded-xl p-space-md shadow-[0_2px_10px_rgba(27,67,50,0.05)] relative overflow-hidden">
+              <div class="flex items-center justify-between gap-space-sm mb-space-xs">
+                <div class="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded-full">
+                  <span class="material-symbols-outlined text-[16px] fill-1">timer</span>
+                  <span class="font-label-sm text-label-sm">Optimal Work Window</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Today (WITA)</span>
+              </div>
+              <div class="mt-2">
+                <p class="font-label-lg text-label-lg text-on-surface font-bold leading-tight">Ideal Time to Spray Bio-Fertilizer:</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="font-headline-xl-mobile text-headline-xl-mobile text-primary tracking-tight font-extrabold">07:00 - 09:30</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">before strong winds</span>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Low evaporation & calm wind speed</span>
+                <button onclick="switchNavTab('weather-advice')" class="text-primary font-label-md text-label-md flex items-center gap-0.5 hover:underline">
+                  <span>Forecast</span>
+                  <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- Quick Telemetry & Soil Moisture -->
+            <section class="grid grid-cols-2 gap-space-sm">
+              <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                  <span class="font-label-sm text-label-sm text-secondary uppercase">Soil Moisture</span>
+                  <span class="material-symbols-outlined text-primary text-[20px]">humidity_high</span>
+                </div>
+                <div class="my-2">
+                  <span class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface">68%</span>
+                  <span class="inline-block ml-1 px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Optimal</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Plot A • Cayennes</p>
+              </div>
+
+              <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                  <span class="font-label-sm text-label-sm text-tertiary uppercase">Soil pH & Temp</span>
+                  <span class="material-symbols-outlined text-tertiary text-[20px]">thermostat</span>
+                </div>
+                <div class="my-2">
+                  <span class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface">6.5</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant ml-1">pH • 26°C</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Balanced Nutrients</p>
+              </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="flex flex-col gap-space-sm">
+              <h2 class="font-headline-md text-headline-md text-on-surface">Smart Field Tools</h2>
+              <div class="grid grid-cols-2 gap-space-sm">
+                <button onclick="switchNavTab('field-notes')" class="bg-surface-container-lowest hover:bg-surface-container-low active:scale-[0.98] transition-all rounded-xl p-space-md shadow-sm flex flex-col items-start gap-2 text-left">
+                  <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">edit_note</span>
+                  </div>
+                  <div>
+                    <span class="font-label-lg text-label-lg text-on-surface block">Field Log</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Record crop activity</span>
+                  </div>
+                </button>
+
+                <button onclick="showToast('AI Leaf Scanner initializing...')" class="bg-surface-container-lowest hover:bg-surface-container-low active:scale-[0.98] transition-all rounded-xl p-space-md shadow-sm flex flex-col items-start gap-2 text-left">
+                  <div class="w-10 h-10 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">document_scanner</span>
+                  </div>
+                  <div>
+                    <span class="font-label-lg text-label-lg text-on-surface block">Pest Scan AI</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Detect leaf disease</span>
+                  </div>
+                </button>
+              </div>
+            </section>
+
+            <!-- Smart Irrigation Control -->
+            <section class="bg-primary text-on-primary rounded-xl p-space-md shadow-md flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-on-primary/15 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[24px]" id="irrigation-icon">sprinkler</span>
+                </div>
+                <div>
+                  <h3 class="font-label-lg text-label-lg font-bold">Drip Irrigation Valve</h3>
+                  <p class="font-body-sm text-body-sm text-on-primary-container" id="irrigation-status-text">Auto-schedule • Off</p>
+                </div>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" id="irrigation-toggle" onchange="toggleIrrigation(this)">
+                <span class="slider-toggle"></span>
+              </label>
+            </section>
+
+            <!-- Farmer Community Chat (Home) -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[18px] fill-1">forum</span>
+                  </div>
+                  <div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Subak Community Chat</h3>
+                    <span class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> 28 Lombok Farmers Online
+                    </span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">Live</span>
+              </div>
+
+              <!-- Chat Feed -->
+              <div id="community-chat-feed" class="space-y-2.5 max-h-52 overflow-y-auto pr-1 bg-surface-container-low/70 rounded-xl p-2.5">
+                <div class="flex items-start gap-2">
+                  <div class="w-7 h-7 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">IB</div>
+                  <div class="bg-surface-container-lowest rounded-2xl rounded-tl-none px-3 py-2 shadow-xs flex-1">
+                    <div class="flex justify-between items-center gap-2">
+                      <span class="font-label-sm text-label-sm text-tertiary">Inaq Baiq • Praya</span>
+                      <span class="text-[10px] text-outline">08:15</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface mt-0.5">Red cayenne wholesale price at Mandalika Market reached IDR 42,000/kg this morning!</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-2">
+                  <div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">LM</div>
+                  <div class="bg-surface-container-lowest rounded-2xl rounded-tl-none px-3 py-2 shadow-xs flex-1">
+                    <div class="flex justify-between items-center gap-2">
+                      <span class="font-label-sm text-label-sm text-secondary">Lalu Mahsun • Kopang</span>
+                      <span class="text-[10px] text-outline">08:42</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface mt-0.5">Anyone sharing organic trichoderma starter this week? My Plot B needs preventive treatment before Thursday rain.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chat Input -->
+              <form onsubmit="sendCommunityMessage(event)" class="flex items-center gap-2">
+                <input id="community-chat-input" type="text" placeholder="Ask fellow farmers or share market prices..." class="flex-1 rounded-full bg-surface-container-low border border-outline-variant/50 px-3.5 py-2 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary"/>
+                <button type="submit" aria-label="Send Message" class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 hover:bg-on-primary-fixed-variant active:scale-95 transition-all shadow-sm">
+                  <span class="material-symbols-outlined text-[18px]">send</span>
+                </button>
+              </form>
+            </section>
+
+          </div>
+
+          <!-- =========================================================== -->
+          <!-- TAB 2: WEATHER & AGRONOMY ADVICE -->
+          <!-- =========================================================== -->
+          <div id="tab-weather-advice" class="tab-content flex-col w-full pb-6 space-y-space-md mt-4">
+            
+            <!-- Microclimate Banner -->
+            <section class="bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl p-space-md shadow-md relative overflow-hidden">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container">BMKG Microclimate Station</span>
+                  <h2 class="font-headline-xl-mobile text-headline-xl-mobile mt-1">29°C • Sunny</h2>
+                  <p class="font-body-sm text-body-sm text-on-primary-container mt-0.5">Feels like 31°C • Rain chance 10%</p>
+                </div>
+                <span class="material-symbols-outlined text-[48px] text-tertiary-fixed fill-1">wb_sunny</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-on-primary/20 text-center">
+                <div>
+                  <span class="font-label-sm text-label-sm text-on-primary-container block">Wind</span>
+                  <span class="font-label-lg text-label-lg">8 km/h SE</span>
+                </div>
+                <div>
+                  <span class="font-label-sm text-label-sm text-on-primary-container block">UV Index</span>
+                  <span class="font-label-lg text-label-lg">High (7)</span>
+                </div>
+                <div>
+                  <span class="font-label-sm text-label-sm text-on-primary-container block">Dew Point</span>
+                  <span class="font-label-lg text-label-lg">24°C</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4-Day Forecast -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+              <h3 class="font-headline-md text-headline-md text-on-surface mb-3">4-Day Field Forecast</h3>
+              <div class="space-y-2.5">
+                <div class="flex items-center justify-between py-1.5 border-b border-surface-container">
+                  <span class="font-label-md text-label-md w-24">Tomorrow</span>
+                  <div class="flex items-center gap-1.5 text-secondary">
+                    <span class="material-symbols-outlined text-[20px]">partly_cloudy_day</span>
+                    <span class="font-body-sm text-body-sm">Partly Cloudy</span>
+                  </div>
+                  <span class="font-label-md text-label-md">24° / 30°C</span>
+                </div>
+                <div class="flex items-center justify-between py-1.5 border-b border-surface-container">
+                  <span class="font-label-md text-label-md w-24">Thursday</span>
+                  <div class="flex items-center gap-1.5 text-primary">
+                    <span class="material-symbols-outlined text-[20px]">rainy</span>
+                    <span class="font-body-sm text-body-sm">Light Rain</span>
+                  </div>
+                  <span class="font-label-md text-label-md">23° / 28°C</span>
+                </div>
+                <div class="flex items-center justify-between py-1.5 border-b border-surface-container">
+                  <span class="font-label-md text-label-md w-24">Friday</span>
+                  <div class="flex items-center gap-1.5 text-tertiary">
+                    <span class="material-symbols-outlined text-[20px]">wb_sunny</span>
+                    <span class="font-body-sm text-body-sm">Clear Sky</span>
+                  </div>
+                  <span class="font-label-md text-label-md">24° / 31°C</span>
+                </div>
+                <div class="flex items-center justify-between py-1.5">
+                  <span class="font-label-md text-label-md w-24">Saturday</span>
+                  <div class="flex items-center gap-1.5 text-secondary">
+                    <span class="material-symbols-outlined text-[20px]">cloud</span>
+                    <span class="font-body-sm text-body-sm">Overcast</span>
+                  </div>
+                  <span class="font-label-md text-label-md">23° / 29°C</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Agronomy Recommendations -->
+            <section class="space-y-2.5">
+              <h3 class="font-headline-md text-headline-md text-on-surface">Climate-Smart Recommendations</h3>
+              
+              <div class="bg-secondary-container/50 border border-secondary-container rounded-xl p-space-md flex gap-3">
+                <span class="material-symbols-outlined text-primary text-[24px] shrink-0 mt-0.5">eco</span>
+                <div>
+                  <h4 class="font-label-lg text-label-lg text-on-surface">Postpone NPK Top-Dressing on Thursday</h4>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">65% chance of afternoon rain on Thursday may cause fertilizer runoff. Apply nutrients on Wednesday morning instead.</p>
+                </div>
+              </div>
+
+              <div class="bg-tertiary-fixed/50 border border-tertiary-fixed rounded-xl p-space-md flex gap-3">
+                <span class="material-symbols-outlined text-tertiary text-[24px] shrink-0 mt-0.5">bug_report</span>
+                <div>
+                  <h4 class="font-label-lg text-label-lg text-on-surface">Thrips & Aphid Alert</h4>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Warm dry winds increase pest activity on chili leaves. Inspect undersides of young leaves every 2 days.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- =========================================================== -->
+          <!-- TAB 3: FIELD NOTES / ACTIVITY LOG -->
+          <!-- =========================================================== -->
+          <div id="tab-field-notes" class="tab-content flex-col w-full pb-6 space-y-space-md mt-4">
+            
+            <!-- Header & Quick Add -->
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Field Activity Log</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Season 2 • Red Cayenne & Shallots</p>
+              </div>
+              <button onclick="openNoteModal()" class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary px-3.5 py-2 rounded-lg font-label-md text-label-md flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                <span>Add Entry</span>
+              </button>
+            </div>
+
+            <!-- Interactive Summary Metrics -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col items-center text-center">
+                <span class="font-headline-md text-headline-md text-primary" id="stat-total-logs">3</span>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Total Logs</span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col items-center text-center">
+                <span class="font-headline-md text-headline-md text-secondary" id="stat-completed-logs">2</span>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Completed</span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-xl p-2.5 shadow-sm border border-outline-variant/30 flex flex-col items-center text-center">
+                <span class="font-headline-md text-headline-md text-tertiary" id="stat-pending-logs">1</span>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Scheduled</span>
+              </div>
+            </div>
+
+            <!-- Interactive Search Bar -->
+            <div class="relative">
+              <span class="material-symbols-outlined text-on-surface-variant text-[20px] absolute left-3 top-1/2 -translate-y-1/2">search</span>
+              <input id="note-search-input" oninput="filterFieldNotes()" type="text" placeholder="Search logs by plot, crop, or activity..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/50 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary shadow-sm"/>
+            </div>
+
+            <!-- Interactive Category Filter Chips -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" id="category-filter-bar">
+              <button onclick="setNoteCategoryFilter('All', this)" class="filter-chip active shrink-0 px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm transition-all shadow-sm">
+                All
+              </button>
+              <button onclick="setNoteCategoryFilter('Fertilization', this)" class="filter-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 font-label-sm text-label-sm hover:bg-surface-container-low transition-all">
+                Fertilization
+              </button>
+              <button onclick="setNoteCategoryFilter('Irrigation', this)" class="filter-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 font-label-sm text-label-sm hover:bg-surface-container-low transition-all">
+                Irrigation
+              </button>
+              <button onclick="setNoteCategoryFilter('Pest Control', this)" class="filter-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 font-label-sm text-label-sm hover:bg-surface-container-low transition-all">
+                Pest Control
+              </button>
+              <button onclick="setNoteCategoryFilter('Harvest', this)" class="filter-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/40 font-label-sm text-label-sm hover:bg-surface-container-low transition-all">
+                Harvest
+              </button>
+            </div>
+
+            <!-- Interactive Notes List Container -->
+            <div id="notes-list" class="space-y-3">
+              <div class="note-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm border-l-4 border-primary transition-all" data-category="Fertilization" data-completed="true">
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Fertilization</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">• Plot A</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Today, 07:45 AM</span>
+                </div>
+                <div class="flex items-start justify-between gap-2 mt-2">
+                  <div>
+                    <h3 class="note-title font-label-lg text-label-lg text-on-surface">Foliar Bio-Fertilizer Spray</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Applied 15L organic liquid fertilizer mixed with neem extract. Leaves look healthy and green.</p>
+                  </div>
+                  <button onclick="toggleNoteComplete(this)" aria-label="Toggle Status" class="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center shrink-0 transition-transform active:scale-90">
+                    <span class="material-symbols-outlined text-[20px] fill-1">check_circle</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="note-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm border-l-4 border-tertiary transition-all" data-category="Irrigation" data-completed="true">
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm">Irrigation</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">• Plot B</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Yesterday, 05:30 PM</span>
+                </div>
+                <div class="flex items-start justify-between gap-2 mt-2">
+                  <div>
+                    <h3 class="note-title font-label-lg text-label-lg text-on-surface">Drip Irrigation Cycle (45 Mins)</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Soil moisture raised from 52% to 69% across Shallot beds.</p>
+                  </div>
+                  <button onclick="toggleNoteComplete(this)" aria-label="Toggle Status" class="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center shrink-0 transition-transform active:scale-90">
+                    <span class="material-symbols-outlined text-[20px] fill-1">check_circle</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="note-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm border-l-4 border-secondary transition-all" data-category="Pest Control" data-completed="false">
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm">Pest Control</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">• Plot A</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm text-tertiary font-medium">Scheduled • Tomorrow</span>
+                </div>
+                <div class="flex items-start justify-between gap-2 mt-2">
+                  <div>
+                    <h3 class="note-title font-label-lg text-label-lg text-on-surface">Yellow Sticky Trap Inspection</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Check thrips and whitefly trap counts along the northern chili rows.</p>
+                  </div>
+                  <button onclick="toggleNoteComplete(this)" aria-label="Toggle Status" class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0 transition-transform active:scale-90">
+                    <span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="notes-empty-state" class="hidden flex-col items-center justify-center py-8 text-center bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant">
+              <span class="material-symbols-outlined text-[36px] text-outline mb-2">search_off</span>
+              <p class="font-label-lg text-label-lg text-on-surface">No matching field logs</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Try another keyword or clear your filter</p>
+            </div>
+          </div>
+
+          <!-- =========================================================== -->
+          <!-- TAB 4: FARM MANAGEMENT & FINANCE -->
+          <!-- =========================================================== -->
+          <div id="tab-management" class="tab-content flex-col w-full pb-6 space-y-space-md mt-4">
+            
+            <!-- Header & Record Transaction -->
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Farm Management</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Finance, Inventory & Harvest ROI</p>
+              </div>
+              <button onclick="openFinanceModal()" class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary px-3.5 py-2 rounded-lg font-label-md text-label-md flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[18px]">add_card</span>
+                <span>Record</span>
+              </button>
+            </div>
+
+            <!-- Net Season Balance Card -->
+            <section class="bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl p-space-md shadow-md relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container">Season 2 Net Cashflow</span>
+                <span class="px-2 py-0.5 rounded-full bg-on-primary/15 font-label-sm text-label-sm">+38.4% ROI</span>
+              </div>
+              <h3 class="font-headline-xl-mobile text-headline-xl-mobile mt-1" id="finance-net-balance">IDR 14,850,000</h3>
+              <div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-on-primary/20">
+                <div>
+                  <span class="font-label-sm text-label-sm text-on-primary-container flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">trending_up</span> Harvest Revenue
+                  </span>
+                  <span class="font-label-lg text-label-lg block mt-0.5" id="finance-total-income">IDR 21,500,000</span>
+                </div>
+                <div>
+                  <span class="font-label-sm text-label-sm text-on-primary-container flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">trending_down</span> Input Expenses
+                  </span>
+                  <span class="font-label-lg text-label-lg block mt-0.5" id="finance-total-expense">IDR 6,650,000</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Resource & Inventory Management -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-headline-md text-headline-md text-on-surface">Input & Stock Management</h3>
+                <span class="font-label-sm text-label-sm text-primary">3 Active Stocks</span>
+              </div>
+              <div class="space-y-2.5">
+                <div>
+                  <div class="flex justify-between items-center text-xs mb-1">
+                    <span class="font-label-md text-label-md text-on-surface">Organic Bio-Fertilizer</span>
+                    <span class="font-body-sm text-body-sm text-primary font-semibold">45 L / 60 L (75%)</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 75%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between items-center text-xs mb-1">
+                    <span class="font-label-md text-label-md text-on-surface">NPK 16-16-16 Granules</span>
+                    <span class="font-body-sm text-body-sm text-tertiary font-semibold">15 kg / 50 kg (Low)</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+                    <div class="h-full bg-tertiary rounded-full" style="width: 30%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between items-center text-xs mb-1">
+                    <span class="font-label-md text-label-md text-on-surface">Neem Botanical Extract</span>
+                    <span class="font-body-sm text-body-sm text-secondary font-semibold">8 L / 10 L (80%)</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+                    <div class="h-full bg-secondary rounded-full" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Recent Financial Ledger -->
+            <section class="space-y-2.5">
+              <div class="flex items-center justify-between">
+                <h3 class="font-headline-md text-headline-md text-on-surface">Financial Ledger</h3>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">November 2026</span>
+              </div>
+              <div id="finance-ledger-list" class="space-y-2.5">
+                <div class="bg-surface-container-lowest rounded-xl p-3 shadow-sm flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-secondary-container text-primary flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-[20px]">payments</span>
+                    </div>
+                    <div>
+                      <h4 class="font-label-lg text-label-lg text-on-surface">Early Cayenne Harvest (250 kg)</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Plot A • Mandalika Wholesale</p>
+                    </div>
+                  </div>
+                  <span class="font-label-md text-label-md text-primary font-bold">+IDR 10.5M</span>
+                </div>
+
+                <div class="bg-surface-container-lowest rounded-xl p-3 shadow-sm flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                    </div>
+                    <div>
+                      <h4 class="font-label-lg text-label-lg text-on-surface">Bio-Fertilizer & Mulch Film</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Farm Input • Pujut Agro</p>
+                    </div>
+                  </div>
+                  <span class="font-label-md text-label-md text-error font-bold">-IDR 1.45M</span>
+                </div>
+
+                <div class="bg-surface-container-lowest rounded-xl p-3 shadow-sm flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-secondary-container text-primary flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-[20px]">payments</span>
+                    </div>
+                    <div>
+                      <h4 class="font-label-lg text-label-lg text-on-surface">Bima Shallots Batch 1 (400 kg)</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Plot B • Mataram Distributor</p>
+                    </div>
+                  </div>
+                  <span class="font-label-md text-label-md text-primary font-bold">+IDR 11.0M</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- =========================================================== -->
+          <!-- TAB 5: FARMER PROFILE & SETTINGS -->
+          <!-- =========================================================== -->
+          <div id="tab-profile" class="tab-content flex-col w-full pb-6 space-y-space-md mt-4">
+            
+            <!-- Profile Header -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center text-2xl font-bold shrink-0 shadow-md">
+                AR
+              </div>
+              <div class="flex-1 min-w-0">
+                <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Verified Lead Farmer</span>
+                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface truncate mt-1">Mr. Amaq Rusli</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant truncate">Pujut Farmer Group • 1.2 Hectares</p>
+              </div>
+            </section>
+
+            <!-- Farm Plots Summary -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-3">
+              <h3 class="font-headline-md text-headline-md text-on-surface">Registered Farm Plots</h3>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-primary">potted_plant</span>
+                  <div>
+                    <p class="font-label-lg text-label-lg text-on-surface">Plot A • Red Cayenne</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">0.7 Ha • Day 48 (Flowering)</p>
+                  </div>
+                </div>
+                <span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-1 rounded">Active</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-secondary">grass</span>
+                  <div>
+                    <p class="font-label-lg text-label-lg text-on-surface">Plot B • Bima Shallots</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">0.5 Ha • Day 22 (Vegetative)</p>
+                  </div>
+                </div>
+                <span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-1 rounded">Active</span>
+              </div>
+            </section>
+
+            <!-- App Settings & Language Indicator -->
+            <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-3">
+              <h3 class="font-headline-md text-headline-md text-on-surface">Preferences</h3>
+              
+              <div class="flex items-center justify-between py-1">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-on-surface-variant">language</span>
+                  <span class="font-body-md text-body-md">App Language</span>
+                </div>
+                <span class="px-2.5 py-1 rounded-md bg-secondary-container text-on-secondary-container font-label-md text-label-md">English (EN)</span>
+              </div>
+
+              <div class="flex items-center justify-between py-1 border-t border-surface-container">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-on-surface-variant">notifications_active</span>
+                  <span class="font-body-md text-body-md">Extreme Weather Alerts</span>
+                </div>
+                <label class="switch-toggle">
+                  <input type="checkbox" checked onchange="showToast('Weather alert settings updated')">
+                  <span class="slider-toggle"></span>
+                </label>
+              </div>
+            </section>
+
+          </div>
+
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="fixed bottom-0 max-w-md w-full z-40 pb-safe bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant/40 shadow-[0_-2px_10px_rgba(27,67,50,0.05)]">
+          <div class="grid grid-cols-5 h-16 px-1">
+            <button onclick="switchNavTab('home')" id="nav-home" class="nav-btn flex flex-col items-center justify-center gap-1 text-primary">
+              <span class="material-symbols-outlined text-[22px] fill-1">home</span>
+              <span class="font-label-sm text-label-sm">Home</span>
+            </button>
+            <button onclick="switchNavTab('weather-advice')" id="nav-weather-advice" class="nav-btn flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary">
+              <span class="material-symbols-outlined text-[22px]">partly_cloudy_day</span>
+              <span class="font-label-sm text-label-sm">Weather</span>
+            </button>
+            <button onclick="switchNavTab('field-notes')" id="nav-field-notes" class="nav-btn flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary">
+              <span class="material-symbols-outlined text-[22px]">edit_note</span>
+              <span class="font-label-sm text-label-sm">Field Log</span>
+            </button>
+            <button onclick="switchNavTab('management')" id="nav-management" class="nav-btn flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary">
+              <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+              <span class="font-label-sm text-label-sm">Finance</span>
+            </button>
+            <button onclick="switchNavTab('profile')" id="nav-profile" class="nav-btn flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary">
+              <span class="material-symbols-outlined text-[22px]">person</span>
+              <span class="font-label-sm text-label-sm">Profile</span>
+            </button>
+          </div>
+        </nav>
+
+      </div>
+
+      <!-- Add Finance Transaction Modal -->
+      <div id="finance-modal" class="hidden fixed inset-0 z-[120] bg-on-surface/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+        <div class="bg-surface-container-lowest w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline-md text-headline-md text-on-surface">Record Farm Finance</h3>
+            <button onclick="closeFinanceModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+          </div>
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Type</label>
+                <select id="fin-type" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-sm text-body-sm">
+                  <option value="income">Harvest Income (+)</option>
+                  <option value="expense">Farm Expense (-)</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Amount (IDR)</label>
+                <input id="fin-amount" type="number" placeholder="e.g. 1500000" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-sm text-body-sm"/>
+              </div>
+            </div>
+            <div>
+              <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Description</label>
+              <input id="fin-title" type="text" placeholder="e.g. Cayenne Harvest Batch 2" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-md text-body-md"/>
+            </div>
+            <div>
+              <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Plot / Category</label>
+              <input id="fin-sub" type="text" placeholder="e.g. Plot A • Local Buyer" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-sm text-body-sm"/>
+            </div>
+          </div>
+          <button onclick="saveFinanceEntry()" class="w-full py-3 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg shadow-md active:scale-[0.98] transition-transform">
+            Save Transaction
+          </button>
+        </div>
+      </div>
+
+      <!-- Add Field Note Modal -->
+      <div id="note-modal" class="hidden fixed inset-0 z-[120] bg-on-surface/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+        <div class="bg-surface-container-lowest w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline-md text-headline-md text-on-surface">New Field Entry</h3>
+            <button onclick="closeNoteModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+          </div>
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Category</label>
+                <select id="note-category" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-sm text-body-sm">
+                  <option value="Fertilization">Fertilization</option>
+                  <option value="Irrigation">Irrigation</option>
+                  <option value="Pest Control">Pest Control</option>
+                  <option value="Harvest">Harvest</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Farm Plot</label>
+                <select id="note-plot" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-sm text-body-sm">
+                  <option value="Plot A">Plot A (Cayenne)</option>
+                  <option value="Plot B">Plot B (Shallots)</option>
+                  <option value="All Plots">All Plots</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Activity Title</label>
+              <input id="note-title" type="text" placeholder="e.g. Organic Compost Application" class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-md text-body-md"/>
+            </div>
+            <div>
+              <label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Details</label>
+              <textarea id="note-desc" rows="3" placeholder="Write field observations..." class="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 font-body-md text-body-md"></textarea>
+            </div>
+          </div>
+          <button onclick="saveFieldNote()" class="w-full py-3 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg shadow-md active:scale-[0.98] transition-transform">
+            Save Entry
+          </button>
+        </div>
+      </div>
+
+      <!-- Custom Toast Notification -->
+      <div id="toast-box" class="fixed top-20 left-1/2 -translate-x-1/2 z-[150] pointer-events-none opacity-0 transition-opacity duration-300">
+        <div class="bg-inverse-surface text-inverse-on-surface px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium whitespace-nowrap">
+          <span class="material-symbols-outlined text-[18px] text-primary-fixed">info</span>
+          <span id="toast-message">Notification</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Splash Screen Progress Simulation
+    window.addEventListener('DOMContentLoaded', () => {
+      const progressBar = document.getElementById('progress-indicator');
+      const percentText = document.getElementById('sync-percent');
+      const statusText = document.getElementById('sync-status');
+
+      const steps = [
+        { pct: 68, text: 'Syncing Rinjani microclimate sensors...' },
+        { pct: 92, text: 'Loading Central Lombok soil telemetry...' },
+        { pct: 100, text: 'All systems ready • Satellites online' }
+      ];
+
+      let idx = 0;
+      const interval = setInterval(() => {
+        if (idx < steps.length) {
+          if (progressBar) progressBar.style.width = steps[idx].pct + '%';
+          if (percentText) percentText.textContent = steps[idx].pct + '%';
+          if (statusText) statusText.textContent = steps[idx].text;
+          idx++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 650);
+    });
+
+    // Enter Main App from Splash Screen
+    function enterApp() {
+      const splash = document.getElementById('screen-splash');
+      const mainApp = document.getElementById('screen-main-app');
+      if (splash) {
+        splash.classList.add('opacity-0');
+        setTimeout(() => {
+          splash.classList.add('hidden');
+          if (mainApp) {
+            mainApp.classList.remove('hidden');
+          }
+        }, 300);
+      }
+    }
+
+    // Bottom Navigation & Tab Switching
+    function switchNavTab(tabId) {
+      const titles = {
+        'home': 'Home',
+        'weather-advice': 'Weather & Advice',
+        'field-notes': 'Field Log',
+        'management': 'Management & Finance',
+        'profile': 'Farmer Profile'
+      };
+
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      const targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+      }
+
+      const headerTitle = document.getElementById('header-page-title');
+      if (headerTitle && titles[tabId]) {
+        headerTitle.textContent = titles[tabId];
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-primary');
+        btn.classList.add('text-on-surface-variant');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.classList.remove('fill-1');
+      });
+
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-on-surface-variant');
+        activeBtn.classList.add('text-primary');
+        const icon = activeBtn.querySelector('.material-symbols-outlined');
+        if (icon) icon.classList.add('fill-1');
+      }
+    }
+
+    // Smart Drip Irrigation Toggle
+    function toggleIrrigation(checkbox) {
+      const statusText = document.getElementById('irrigation-status-text');
+      const icon = document.getElementById('irrigation-icon');
+      if (checkbox.checked) {
+        statusText.textContent = 'Active • Watering Plot A & B';
+        icon.classList.add('animate-pulse');
+        showToast('Drip irrigation valve opened');
+      } else {
+        statusText.textContent = 'Auto-schedule • Off';
+        icon.classList.remove('animate-pulse');
+        showToast('Drip irrigation valve closed');
+      }
+    }
+
+    // Interactive Field Log Logic
+    let activeNoteCategory = 'All';
+
+    function setNoteCategoryFilter(category, btnEl) {
+      activeNoteCategory = category;
+      document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+        chip.classList.add('bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant/40');
+      });
+      btnEl.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant/40');
+      btnEl.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+      filterFieldNotes();
+    }
+
+    function filterFieldNotes() {
+      const query = (document.getElementById('note-search-input')?.value || '').toLowerCase();
+      const cards = document.querySelectorAll('.note-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const text = card.textContent.toLowerCase();
+        const matchesCat = activeNoteCategory === 'All' || cat === activeNoteCategory;
+        const matchesQuery = text.includes(query);
+
+        if (matchesCat && matchesQuery) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      const emptyState = document.getElementById('notes-empty-state');
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+          emptyState.classList.add('flex');
+        } else {
+          emptyState.classList.add('hidden');
+          emptyState.classList.remove('flex');
+        }
+      }
+    }
+
+    function toggleNoteComplete(btn) {
+      const card = btn.closest('.note-card');
+      const isCompleted = card.getAttribute('data-completed') === 'true';
+      const icon = btn.querySelector('.material-symbols-outlined');
+
+      if (isCompleted) {
+        card.setAttribute('data-completed', 'false');
+        btn.classList.remove('bg-secondary-container', 'text-primary');
+        btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+        icon.textContent = 'radio_button_unchecked';
+        icon.classList.remove('fill-1');
+        showToast('Marked as scheduled');
+      } else {
+        card.setAttribute('data-completed', 'true');
+        btn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        btn.classList.add('bg-secondary-container', 'text-primary');
+        icon.textContent = 'check_circle';
+        icon.classList.add('fill-1');
+        showToast('Activity marked as completed');
+      }
+      updateNoteStats();
+    }
+
+    function updateNoteStats() {
+      const cards = document.querySelectorAll('.note-card');
+      let completed = 0;
+      cards.forEach(c => {
+        if (c.getAttribute('data-completed') === 'true') completed++;
+      });
+      document.getElementById('stat-total-logs').textContent = cards.length;
+      document.getElementById('stat-completed-logs').textContent = completed;
+      document.getElementById('stat-pending-logs').textContent = cards.length - completed;
+    }
+
+    function openNoteModal() {
+      document.getElementById('note-modal').classList.remove('hidden');
+    }
+
+    function closeNoteModal() {
+      document.getElementById('note-modal').classList.add('hidden');
+    }
+
+    function saveFieldNote() {
+      const category = document.getElementById('note-category').value;
+      const plot = document.getElementById('note-plot').value;
+      const title = document.getElementById('note-title').value.trim();
+      const desc = document.getElementById('note-desc').value.trim();
+
+      if (!title) {
+        showToast('Please enter an activity title');
+        return;
+      }
+
+      const list = document.getElementById('notes-list');
+      const card = document.createElement('div');
+      card.className = 'note-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm border-l-4 border-primary transition-all';
+      card.setAttribute('data-category', category);
+      card.setAttribute('data-completed', 'true');
+
+      card.innerHTML = `
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">${category}</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">• ${plot}</span>
+          </div>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Just now</span>
+        </div>
+        <div class="flex items-start justify-between gap-2 mt-2">
+          <div>
+            <h3 class="note-title font-label-lg text-label-lg text-on-surface">${title}</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">${desc || 'Logged field activity.'}</p>
+          </div>
+          <button onclick="toggleNoteComplete(this)" aria-label="Toggle Status" class="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center shrink-0 transition-transform active:scale-90">
+            <span class="material-symbols-outlined text-[20px] fill-1">check_circle</span>
+          </button>
+        </div>
+      `;
+
+      list.prepend(card);
+      document.getElementById('note-title').value = '';
+      document.getElementById('note-desc').value = '';
+      updateNoteStats();
+      filterFieldNotes();
+      closeNoteModal();
+      showToast('Field entry saved successfully');
+    }
+
+    // Community Chat on Home Tab
+    function sendCommunityMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('community-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const feed = document.getElementById('community-chat-feed');
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+      const msgRow = document.createElement('div');
+      msgRow.className = 'flex items-start gap-2 justify-end';
+      msgRow.innerHTML = `
+        <div class="bg-primary text-on-primary rounded-2xl rounded-tr-none px-3 py-2 shadow-xs max-w-[82%]">
+          <div class="flex justify-between items-center gap-3">
+            <span class="font-label-sm text-label-sm text-on-primary-container">Mr. Amaq Rusli (You)</span>
+            <span class="text-[10px] text-on-primary-container">${timeStr}</span>
+          </div>
+          <p class="font-body-sm text-body-sm mt-0.5">${text}</p>
+        </div>
+        <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">AR</div>
+      `;
+
+      feed.appendChild(msgRow);
+      feed.scrollTop = feed.scrollHeight;
+      input.value = '';
+      showToast('Message sent to Subak community');
+    }
+
+    // Farm Management & Finance Logic
+    let totalIncomeIDR = 21500000;
+    let totalExpenseIDR = 6650000;
+
+    function openFinanceModal() {
+      document.getElementById('finance-modal').classList.remove('hidden');
+    }
+
+    function closeFinanceModal() {
+      document.getElementById('finance-modal').classList.add('hidden');
+    }
+
+    function formatIDR(num) {
+      return 'IDR ' + num.toLocaleString('en-US');
+    }
+
+    function saveFinanceEntry() {
+      const type = document.getElementById('fin-type').value;
+      const amount = parseInt(document.getElementById('fin-amount').value, 10);
+      const title = document.getElementById('fin-title').value.trim();
+      const sub = document.getElementById('fin-sub').value.trim() || 'General Farm';
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        showToast('Please enter valid title and amount');
+        return;
+      }
+
+      if (type === 'income') {
+        totalIncomeIDR += amount;
+      } else {
+        totalExpenseIDR += amount;
+      }
+
+      const net = totalIncomeIDR - totalExpenseIDR;
+      document.getElementById('finance-net-balance').textContent = formatIDR(net);
+      document.getElementById('finance-total-income').textContent = formatIDR(totalIncomeIDR);
+      document.getElementById('finance-total-expense').textContent = formatIDR(totalExpenseIDR);
+
+      const ledger = document.getElementById('finance-ledger-list');
+      const item = document.createElement('div');
+      item.className = 'bg-surface-container-lowest rounded-xl p-3 shadow-sm flex items-center justify-between';
+      const isIncome = type === 'income';
+      const shortMillions = (amount / 1000000).toFixed(2).replace(/\.00$/, '') + 'M';
+
+      item.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg ${isIncome ? 'bg-secondary-container text-primary' : 'bg-error-container text-on-error-container'} flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">${isIncome ? 'payments' : 'shopping_bag'}</span>
+          </div>
+          <div>
+            <h4 class="font-label-lg text-label-lg text-on-surface">${title}</h4>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">${sub}</p>
+          </div>
+        </div>
+        <span class="font-label-md text-label-md ${isIncome ? 'text-primary' : 'text-error'} font-bold">${isIncome ? '+' : '-'}IDR ${shortMillions}</span>
+      `;
+
+      ledger.prepend(item);
+      document.getElementById('fin-amount').value = '';
+      document.getElementById('fin-title').value = '';
+      document.getElementById('fin-sub').value = '';
+      closeFinanceModal();
+      showToast('Financial transaction recorded');
+    }
+
+    // Toast Helper
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toast-box');
+      const msgEl = document.getElementById('toast-message');
+      msgEl.textContent = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
